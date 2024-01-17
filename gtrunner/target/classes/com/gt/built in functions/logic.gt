@@ -1,0 +1,19 @@
+new [node = 1]
+
+if [logic [node < 2]] {
+    math [node = (node*2)^3]
+} else if [logic [node > 3]] {
+    math [node = (node*-1)*3]
+
+    if [logic [1 > 2]] {
+        math [node = (node*-2)*3]
+    } else {
+        math [node = (node*-3)*3]
+    }
+
+    math [node = (node*-1)*3]
+} else {
+    math [node = 4]
+}
+
+logic [node = 4 < node]

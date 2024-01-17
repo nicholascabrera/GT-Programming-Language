@@ -1,0 +1,9 @@
+new [iterator = 0]
+
+label:
+math [iterator = iterator + 1]
+
+if[logic [iterator < 10]] {
+    out [E]
+    branch [label]  //branch test
+}
