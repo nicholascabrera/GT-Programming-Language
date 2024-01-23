@@ -19,19 +19,19 @@ for [value in array1]{
 }       //runs through each value in array1
 
 
-for [x in range(2, 6)]{
+for [x in 2->6]{
 
 
 }       //goes from 2 to 6
 
 
-for [i in range(2, node1)]{
+for [i in 2->node1]{
 
 
 }       //goes from 2 to the value of node1
 
 
-for [value in range(6,2)]{
+for [value in 6->2]{
 
 
 }       //goes from 6 to 2
@@ -40,4 +40,16 @@ for [value in range(6,2)]{
 for [x in range(array1, -1)]{
 
 
-}       //runs through each value in array1, reversed.
+}       //runs through each value in array1, reversed
+
+
+for [x in range(2, 6)]{     //creates an array, which is then run through element by element
+
+
+}       //runs through each value in the created array
+
+
+for [x in range(6, 2)]{     //creates an array, which is then run through element by element
+
+
+}       //runs through each value in the created array
