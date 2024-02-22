@@ -12,7 +12,6 @@ import javax.swing.JOptionPane;
 import com.gt.adjacencies.AdjacencyList;
 import com.gt.adjacencies.Branch;
 import com.gt.adjacencies.ClosedBracket;
-import com.gt.adjacencies.Comment;
 import com.gt.adjacencies.Else;
 import com.gt.adjacencies.If;
 import com.gt.adjacencies.Input;
@@ -43,8 +42,9 @@ public class Compiler {
             new RegexPair(" {0,}[{] {0,}", RegexType.OPEN_BRACKET),
             new RegexPair(" {0,}", RegexType.EMPTY),
             new RegexPair(" {0,}[}] {0,}", RegexType.CLOSED_BRACKET),
-            new RegexPair(" {0,}\\/\\/", RegexType.COMMENT),
-            new RegexPair(" {0,}branch {0,}\\[ {0,}[A-Za-z]+ {0,}\\] {0,}", RegexType.BRANCH)
+            new RegexPair(" {0,}branch {0,}\\[ {0,}[A-Za-z]+ {0,}\\] {0,}", RegexType.BRANCH),
+            new RegexPair(" {0,}for {0,}\\[ {0,}[A-Za-z0-9]+ {0,}in {0,}-?[A-Za-z0-9]+ {0,}\\] {0,}", RegexType.FOR),
+            new RegexPair(" {0,}for {0,}\\[ {0,}[A-Za-z0-9]+ {0,}in {0,}-?[A-Za-z0-9]+ {0,}-> {0,}-?[A-Za-z0-9]+ {0,}\\] {0,}", RegexType.FOR_ARROW)
         };
     
     private Stack<String> read;
@@ -72,7 +72,6 @@ public class Compiler {
         this.read = new Stack<>();
         this.adjacencyList = new AdjacencyList(filename);
         labelMap = new HashMap<String,NodeVector>();
-        //C:\Users\ncabr\OneDrive\Documents\Programming\Java\GT\gtrunner\src\main\java\com\gt\built in functions\code.gt
         try {
             this.reader = new BufferedReader(new FileReader("C:\\Users\\n" + 
                     "cabr\\OneDrive\\Documents\\Programming\\Java\\GT\\gtrunner\\src\\main\\java\\com\\gt\\built in functions\\" + filename + ".gt"));
@@ -110,11 +109,9 @@ public class Compiler {
                 outerloop:
                 for(int i = 0; i < line.length(); i++){     //read through each character for the brackets
                     if(Compiler.inputValidation(Pattern.compile(" {0,}\\/\\/"), line.substring(start, i))) {
-                        this.adjacencyList.addNodeVector(new Comment(keywordNum, line.substring(i)).getVector());
                         //read the next line
                         line = reader.readLine();
                         lineNumber += 1;
-                        keywordNum += 1;
                         continue lineloop;
                     } else if(line.charAt(i) == '['){
                         this.read.push(line.substring(start, i+1));
@@ -194,6 +191,16 @@ public class Compiler {
                                     case IF:
                                         If ifObject = new If(keywordNum);
                                         this.adjacencyList.addNodeVector(ifObject.getVector());
+                                        start = i+1;
+                                        keywordNum+=1;
+                                        continue outerloop;
+                                    case FOR:
+                                        
+                                        start = i+1;
+                                        keywordNum+=1;
+                                        continue outerloop;
+                                    case FOR_ARROW:
+                                        
                                         start = i+1;
                                         keywordNum+=1;
                                         continue outerloop;

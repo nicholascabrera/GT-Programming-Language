@@ -9,7 +9,14 @@ public class Main {
         Compiler compiler = new Compiler("code");
         compiler.compile();
 
+        Grapher grapher = new Grapher(compiler.getAdjacencyList()); // this is occuring in a different thread.
+        grapher.execute();
+
         new Interpreter().run(compiler.getAdjacencyList());
+        
+        while (!grapher.isDone()){  //this is so that we give the Grapher enough time to run, since the interpreter is so fast.
+            // do nothing but run
+        }
     }
 
     public void timedRun(){

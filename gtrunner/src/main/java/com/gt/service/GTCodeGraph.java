@@ -1,74 +1,48 @@
 package com.gt.service;
 
-import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
 
-import com.gt.adjacencies.ClosedBracket;
-import com.gt.adjacencies.Comment;
-import com.gt.adjacencies.Else;
-import com.gt.adjacencies.If;
-import com.gt.adjacencies.Input;
-import com.gt.adjacencies.Logic;
-import com.gt.adjacencies.Math;
-import com.gt.adjacencies.New;
-import com.gt.adjacencies.OpenBracket;
-import com.gt.adjacencies.Output;
+import java.awt.Toolkit;
 
-public class GTCodeGraph {
-    private ArrayList<Input> inputList;
-    private ArrayList<Output> outputList;
-    private ArrayList<New> newList;
-    private ArrayList<Math> mathList;
-    private ArrayList<Logic> logicList;
-    private ArrayList<If> ifList;
-    private ArrayList<Else> elseList;
-    private ArrayList<OpenBracket> obList;
-    private ArrayList<ClosedBracket> cbList;
-    private ArrayList<Comment> commentList;
+import com.gt.adjacencies.AdjacencyList;
 
-    public void addInput(Input in){
-        this.inputList.add(in);
-    }
-    public void addOutput(Output out){
-        this.outputList.add(out);
+public class GTCodeGraph extends JFrame{
+    private AdjacencyList adjacencyList;
+    final private int frame_width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/3;
+    final private int frame_height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2;
+    final private int x_location = 15;
+    final private int y_location = 15;
+
+    public GTCodeGraph(AdjacencyList adjacencyList){
+        this.adjacencyList = adjacencyList;
+        
+        try { 
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setTitle("GT Code Graph");
+        setBounds(x_location, y_location, frame_width, frame_height);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setResizable(false);
     }
 
-    public ArrayList<ClosedBracket> getCbList() {
-        return cbList;
+    public void graph() throws Exception{
+        if(this.adjacencyList != null){
+            CodePanel codePanel = new CodePanel(this.adjacencyList, frame_height, frame_height);
+            add(codePanel);
+        } else {
+            throw new Exception("Adjacency List not initialized!");
+        }
     }
 
-    public ArrayList<Comment> getCommentList() {
-        return commentList;
+    public AdjacencyList getAdjacencyList() {
+        return adjacencyList;
     }
 
-    public ArrayList<Else> getElseList() {
-        return elseList;
-    }
-
-    public ArrayList<If> getIfList() {
-        return ifList;
-    }
-
-    public ArrayList<Input> getInputList() {
-        return inputList;
-    }
-
-    public ArrayList<Logic> getLogicList() {
-        return logicList;
-    }
-
-    public ArrayList<Math> getMathList() {
-        return mathList;
-    }
-
-    public ArrayList<New> getNewList() {
-        return newList;
-    }
-
-    public ArrayList<OpenBracket> getObList() {
-        return obList;
-    }
-
-    public ArrayList<Output> getOutputList() {
-        return outputList;
+    public void setAdjacencyList(AdjacencyList adjacencyList) {
+        this.adjacencyList = adjacencyList;
     }
 }

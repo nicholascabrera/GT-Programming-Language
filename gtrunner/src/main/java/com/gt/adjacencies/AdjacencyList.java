@@ -13,7 +13,7 @@ public class AdjacencyList extends ArrayList<NodeVector>{
 
     public AdjacencyList(String filename){
         try {
-            this.filename = "C:\\Users\\ncabr\\OneDrive\\Documents\\Programming\\Java\\GT\\gtrunner\\gtarget\\"+filename + ".aja";
+            this.filename = "C:\\Users\\ncabr\\OneDrive\\Documents\\Programming\\Java\\GT\\gtrunner\\gtarget\\" + filename + ".aja";
             File myObj = new File(this.filename);
             //use Files.mismatch
             
