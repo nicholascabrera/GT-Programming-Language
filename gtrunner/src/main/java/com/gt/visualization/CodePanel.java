@@ -1,4 +1,4 @@
-package com.gt.service;
+package com.gt.visualization;
 
 import java.awt.Color;
 import java.awt.Graphics;

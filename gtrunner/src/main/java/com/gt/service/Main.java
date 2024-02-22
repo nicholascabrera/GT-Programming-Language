@@ -1,5 +1,7 @@
 package com.gt.service;
 
+import com.gt.visualization.Grapher;
+
 public class Main {
     public static void main(String[] args) {
         new Main().run();

@@ -1,4 +1,4 @@
-package com.gt.service;
+package com.gt.visualization;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
