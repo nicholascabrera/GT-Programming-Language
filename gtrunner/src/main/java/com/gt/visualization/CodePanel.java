@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.RenderingHints;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JPanel;
@@ -31,6 +32,7 @@ public class CodePanel extends JPanel{
     private Point pointL;   //Necrotic
     private Point pointM;   //Force
     private Point pointN;   //Psychic
+    private HashMap<String, Point> userVariables;
 
     private int frame_height;
     private int frame_width;
@@ -42,13 +44,15 @@ public class CodePanel extends JPanel{
         this.adjacencyList = adjacencyList;
         this.frame_height = frame_height;
         this.frame_width = frame_width;
+        this.userVariables = new HashMap<>();
         
         /* decide the major measurements based on the frame width and height */
-        int link_length = Math.min(frame_width/6, frame_height/6);
+        int link_length = Math.min(frame_width/10, frame_height/10);
         int equator = frame_height/2 - 25;
+        int startingX = (frame_width/2)-link_length*2;
 
         /* Map the points in a circle - see "vertex graph.drawio" for layout */
-        this.pointA = new Point(link_length, equator);
+        this.pointA = new Point(startingX, equator);
         this.pointB = new Point(pointA.x+link_length/2, pointA.y-link_length);
         this.pointC = new Point(pointB.x+link_length/2, pointB.y-link_length/2);
         this.pointD = new Point(pointC.x+link_length, pointC.y-link_length/2);
@@ -76,6 +80,12 @@ public class CodePanel extends JPanel{
         drawAdjacencyList(g);
     }
 
+    /**
+     * Draws a point at a given location, and then labels it.
+     * @param g
+     * @param point
+     * @param node
+     */
     private void drawPoint(Graphics g, Point point, String node){
         /* points and their labels are black. */
         g.setColor(Color.BLACK);
@@ -99,6 +109,12 @@ public class CodePanel extends JPanel{
         
     }
 
+    /**
+     * Draws a directed arrow between two points.
+     * @param g
+     * @param startPoint
+     * @param endPoint
+     */
     private void drawLink(Graphics g, Point startPoint, Point endPoint){
         /* links between points are blue. */
         g.setColor(Color.BLUE);
@@ -111,6 +127,11 @@ public class CodePanel extends JPanel{
         drawArrow(g, startCenter.x, startCenter.y, endCenter.x, endCenter.y, ARROW_LENGTH, 13); //head angle is the angle that the arrow forms
     }
 
+    /**
+     * Draws a circle starting and ending at the same point.
+     * @param g
+     * @param point
+     */
     private void drawSelfReferentialLink(Graphics g, Point point){
         /* links between points are blue. */
         g.setColor(Color.BLUE);
@@ -130,8 +151,97 @@ public class CodePanel extends JPanel{
         g.drawPolyline(xs, ys, 3);
     }
 
+    /**
+     * Given a point, returns the point at the center of the given point.
+     * @param point
+     * @return
+     */
     private Point getCenter(Point point){
         return new Point(point.x+CIRCLE_WIDTH_HEIGHT/2, point.y+CIRCLE_WIDTH_HEIGHT/2);
+    }
+
+    /**
+     * Given a string name, adds a new point to the user variables and draws the point.
+     * @param name
+     */
+    private void addPoint(Graphics g, String name){
+        /* If the graph does not already have the user variable, we must add it. */
+        if(!this.userVariables.containsKey(name)){
+            /**
+             * the layout of user variables will be a certain distance away from the center of the frame,
+             * and separated from each other by a certain angle interval. when the total angle displaced is
+             * >= 360, the angle is reset to zero with a small offset and the distance increased by an interval.
+             */
+            int angleInterval = 20;
+            int offsetInterval = 5;
+            int initialDistance = (int)(Math.min(frame_width/10, frame_height/10) * 3.5);
+            int distanceInterval = 20;
+
+            /* Start at 0 degrees, and increase by 15 degrees with each added variable. */
+            int totalAngle = (this.userVariables.size()) * angleInterval;
+            /* Number of times we have revolved around the graph. */
+            int numRevolutions = totalAngle/360;
+            /* Limit the total angle from 0 to 360. */
+            totalAngle %= 360;
+            /* Offset the total angle by our offset interval, and set it to our final angle. */
+            int angle = totalAngle + numRevolutions * offsetInterval;
+            /* Find the distance from the center. */
+            int distance = initialDistance + distanceInterval * numRevolutions;
+            /* Find the point given by our angle and distance. */
+            int x = (int)(distance*Math.cos(Math.toRadians(angle-90))+this.frame_width/2);
+            int y = (int)(distance*Math.sin(Math.toRadians(angle-90))+this.frame_height/2);
+            Point userPoint = new Point(x, y);
+            /* Add the point to the user variable hash map. */
+            this.userVariables.put(name, userPoint);
+        }
+        /* If the variable already exists, we skip to here. */
+        /* Once the variable has been added or determined to exist, we draw it. */
+        drawPoint(g, this.userVariables.get(name), name);
+    }
+
+    /**
+     * Given a node attribute, returns the corresponding point.
+     * @param attribute
+     * @return
+     */
+    private Point getNodePoint(NodeAttribute attribute) {
+        if(attribute != null) {
+            switch (attribute){
+                case A:
+                    return this.pointA;
+                case B:
+                    return this.pointB;
+                case C:
+                    return this.pointC;
+                case D:
+                    return this.pointD;
+                case E:
+                    return this.pointE;
+                case F:
+                    return this.pointF;
+                case G:
+                    return this.pointG;
+                case H:
+                    return this.pointH;
+                case I:
+                    return this.pointI;
+                case J:
+                    return this.pointJ;
+                case K:
+                    return this.pointK;
+                case L:
+                    return this.pointL;
+                case M:
+                    return this.pointM;
+                case N:
+                    return this.pointN;
+                default:
+                    // do nothing for now, but later i will need to add new nodes and link them up.
+                    return new Point(0,0);
+            }
+        }
+
+        return new Point(0,0);
     }
     
     /**
@@ -205,69 +315,28 @@ public class CodePanel extends JPanel{
     }
 
     /**
-     * Given a node attribute, returns the corresponding point.
-     * @param attribute
-     * @return
-     */
-    public Point getNodePoint(NodeAttribute attribute) {
-        if(attribute != null) {
-            switch (attribute){
-                case A:
-                    return this.pointA;
-                case B:
-                    return this.pointB;
-                case C:
-                    return this.pointC;
-                case D:
-                    return this.pointD;
-                case E:
-                    return this.pointE;
-                case F:
-                    return this.pointF;
-                case G:
-                    return this.pointG;
-                case H:
-                    return this.pointH;
-                case I:
-                    return this.pointI;
-                case J:
-                    return this.pointJ;
-                case K:
-                    return this.pointK;
-                case L:
-                    return this.pointL;
-                case M:
-                    return this.pointM;
-                case N:
-                    return this.pointN;
-                default:
-                    // do nothing for now, but later i will need to add new nodes and link them up.
-                    return new Point(0,0);
-            }
-        }
-
-        return new Point(0,0);
-    }
-
-    /**
      * Given an adjacency list, graph it.
      * @param g
      */
-    public void drawAdjacencyList(Graphics g){
+    private void drawAdjacencyList(Graphics g){
         HashSet<NodeAttribute> nodesToDraw = new HashSet<>();
 
         for (NodeVector nodeVector : this.adjacencyList) {
             Point startPoint = getNodePoint(nodeVector.getStartNode());
             Point endPoint = getNodePoint(nodeVector.getEndNode());
-            if(startPoint != null && endPoint != null && endPoint.x != 0 && endPoint.y != 0){
+            if(endPoint.x != 0 && endPoint.y != 0){
                 if(nodeVector.getStartNode() == nodeVector.getEndNode()){
                     drawSelfReferentialLink(g, endPoint);
                 } else {
                     drawLink(g, startPoint, endPoint);
                 }
-                nodesToDraw.add(nodeVector.getStartNode());
                 nodesToDraw.add(nodeVector.getEndNode());
+            } else {
+                addPoint(g, nodeVector.getNodeName());
+                drawLink(g, startPoint, this.userVariables.get(nodeVector.getNodeName()));
             }
+
+            nodesToDraw.add(nodeVector.getStartNode());
         }
 
         for(NodeAttribute nodeAttribute : nodesToDraw){
