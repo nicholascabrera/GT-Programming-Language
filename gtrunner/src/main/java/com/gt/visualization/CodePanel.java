@@ -72,7 +72,7 @@ public class CodePanel extends JPanel{
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //draw the adjacency list as a graph
+        /* draw the adjacency list as a graph. */
         drawAdjacencyList(g);
     }
 
@@ -109,6 +109,15 @@ public class CodePanel extends JPanel{
 
         /* Separate function which draws both a line and a head, so its a directed arrow. */
         drawArrow(g, startCenter.x, startCenter.y, endCenter.x, endCenter.y, ARROW_LENGTH, 13); //head angle is the angle that the arrow forms
+    }
+
+    private void drawSelfReferentialLink(Graphics g, Point point){
+        /* links between points are blue. */
+        g.setColor(Color.BLUE);
+
+        /* The center of a point and its location are different, hence we need the location of the center. */
+        Point pointCenter = getCenter(point);
+        g.drawOval(pointCenter.x, pointCenter.y, 10, 10);
     }
 
     /* Stolen code - not sure what it does */
@@ -158,7 +167,7 @@ public class CodePanel extends JPanel{
 
         //draw all 14 verticies and link them into a complete planar graph
         drawLink(g, pointA, pointB);    //draw the links first! this way, the letters aren't getting blocked.
-        drawLink(g, pointB, pointC);
+        drawLink(g, pointB, pointC);    //blocked letters are no longer a problem with the new design, but the point being blocked is.
         drawLink(g, pointB, pointD);
         drawLink(g, pointC, pointE);
         drawLink(g, pointD, pointE);
@@ -251,7 +260,11 @@ public class CodePanel extends JPanel{
             Point startPoint = getNodePoint(nodeVector.getStartNode());
             Point endPoint = getNodePoint(nodeVector.getEndNode());
             if(startPoint != null && endPoint != null && endPoint.x != 0 && endPoint.y != 0){
-                drawLink(g, startPoint, endPoint);
+                if(nodeVector.getStartNode() == nodeVector.getEndNode()){
+                    drawSelfReferentialLink(g, endPoint);
+                } else {
+                    drawLink(g, startPoint, endPoint);
+                }
                 nodesToDraw.add(nodeVector.getStartNode());
                 nodesToDraw.add(nodeVector.getEndNode());
             }
