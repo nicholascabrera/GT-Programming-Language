@@ -43,9 +43,11 @@ public class CodePanel extends JPanel{
         this.frame_height = frame_height;
         this.frame_width = frame_width;
         
+        /* decide the major measurements based on the frame width and height */
         int link_length = Math.min(frame_width/6, frame_height/6);
         int equator = frame_height/2 - 25;
 
+        /* Map the points in a circle - see "vertex graph.drawio" for layout */
         this.pointA = new Point(link_length, equator);
         this.pointB = new Point(pointA.x+link_length/2, pointA.y-link_length);
         this.pointC = new Point(pointB.x+link_length/2, pointB.y-link_length/2);
@@ -61,6 +63,7 @@ public class CodePanel extends JPanel{
         this.pointM = new Point(pointL.x-link_length, pointL.y-link_length/2);
         this.pointN = new Point(pointM.x-link_length/2, pointM.y-link_length/2);
 
+        /* paint */
         repaint();
     }
 
@@ -69,15 +72,19 @@ public class CodePanel extends JPanel{
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        //draw the connected planar graph
-        drawAdjacencyGraph(g);
+        //draw the adjacency list as a graph
+        drawAdjacencyList(g);
     }
 
     private void drawPoint(Graphics g, Point point, String node){
+        /* points and their labels are black. */
         g.setColor(Color.BLACK);
+        /* draw the point. */
         g.fillOval(point.x, point.y, CIRCLE_WIDTH_HEIGHT, CIRCLE_WIDTH_HEIGHT);
-        int equator = frame_height/2 - 25;
 
+
+        int equator = frame_height/2 - 25;
+        /* Logic for label placement */
         if(point.y == equator){
             if(point.x < this.frame_width/2){
                 g.drawString(node, point.x-10, point.y+5);
@@ -93,13 +100,18 @@ public class CodePanel extends JPanel{
     }
 
     private void drawLink(Graphics g, Point startPoint, Point endPoint){
+        /* links between points are blue. */
         g.setColor(Color.BLUE);
+
+        /* The center of a point and its location are different, hence we need the location of the center. */
         Point startCenter = getCenter(startPoint);
         Point endCenter = getCenter(endPoint);
+
+        /* Separate function which draws both a line and a head, so its a directed arrow. */
         drawArrow(g, startCenter.x, startCenter.y, endCenter.x, endCenter.y, ARROW_LENGTH, 13); //head angle is the angle that the arrow forms
     }
 
-    /* Stolen code */
+    /* Stolen code - not sure what it does */
     public void drawArrow(Graphics g, int x0, int y0, int x1, int y1, int headLength, int headAngle) {
         double offs = headAngle * Math.PI / 180.0;
         double angle = Math.atan2(y0 - y1, x0 - x1);
@@ -112,7 +124,11 @@ public class CodePanel extends JPanel{
     private Point getCenter(Point point){
         return new Point(point.x+CIRCLE_WIDTH_HEIGHT/2, point.y+CIRCLE_WIDTH_HEIGHT/2);
     }
- 
+    
+    /**
+     * Used to see all the points.
+     * @param g
+     */
     @SuppressWarnings("unused")
     private void drawAllPoints(Graphics g){
         //draw all 14 verticies
@@ -132,6 +148,10 @@ public class CodePanel extends JPanel{
         drawPoint(g, pointN, "N");
     }
 
+    /**
+     * Used to graph a connected planar graph. Warning - this does not work anymore.
+     * @param g
+     */
     @SuppressWarnings("unused")
     private void drawConnectedPlanarGraph(Graphics g){
         g.setColor(Color.BLACK);
@@ -175,6 +195,11 @@ public class CodePanel extends JPanel{
         drawPoint(g, pointN, "N");
     }
 
+    /**
+     * Given a node attribute, returns the corresponding point.
+     * @param attribute
+     * @return
+     */
     public Point getNodePoint(NodeAttribute attribute) {
         if(attribute != null) {
             switch (attribute){
@@ -215,7 +240,11 @@ public class CodePanel extends JPanel{
         return new Point(0,0);
     }
 
-    public void drawAdjacencyGraph(Graphics g){
+    /**
+     * Given an adjacency list, graph it.
+     * @param g
+     */
+    public void drawAdjacencyList(Graphics g){
         HashSet<NodeAttribute> nodesToDraw = new HashSet<>();
 
         for (NodeVector nodeVector : this.adjacencyList) {
