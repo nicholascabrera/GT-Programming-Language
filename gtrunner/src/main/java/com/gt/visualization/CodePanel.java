@@ -7,12 +7,14 @@ import java.awt.Point;
 import java.awt.RenderingHints;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import javax.swing.JPanel;
 
 import com.gt.adjacencies.AdjacencyList;
 import com.gt.node.NodeAttribute;
 import com.gt.node.NodeVector;
+import com.gt.service.Compiler;
 
 public class CodePanel extends JPanel{
     private AdjacencyList adjacencyList;
@@ -32,7 +34,8 @@ public class CodePanel extends JPanel{
     private Point pointL;   //Necrotic
     private Point pointM;   //Force
     private Point pointN;   //Psychic
-    private HashMap<String, Point> userVariables;
+    private HashMap<String, Point> userVariables;   /* the name of the variable, its location */
+    private HashMap<String, String> nodeOrders;     /* start->end, its order within the program */
 
     private int frame_height;
     private int frame_width;
@@ -45,6 +48,7 @@ public class CodePanel extends JPanel{
         this.frame_height = frame_height;
         this.frame_width = frame_width;
         this.userVariables = new HashMap<>();
+        this.nodeOrders = new HashMap<>();
         
         /* decide the major measurements based on the frame width and height */
         int link_length = Math.min(frame_width/10, frame_height/10);
@@ -141,7 +145,7 @@ public class CodePanel extends JPanel{
         g.drawOval(pointCenter.x, pointCenter.y, 10, 10);
     }
 
-    /* Stolen code - not sure what it does */
+    /* Stolen code - not sure what it does. */
     public void drawArrow(Graphics g, int x0, int y0, int x1, int y1, int headLength, int headAngle) {
         double offs = headAngle * Math.PI / 180.0;
         double angle = Math.atan2(y0 - y1, x0 - x1);
@@ -235,13 +239,71 @@ public class CodePanel extends JPanel{
                     return this.pointM;
                 case N:
                     return this.pointN;
-                default:
-                    // do nothing for now, but later i will need to add new nodes and link them up.
-                    return new Point(0,0);
             }
         }
 
         return new Point(0,0);
+    }
+
+    /**
+     * Adds the order with which vectors occur within a program to a hash map.
+     * @param nodeVector
+     */
+    public void addOrders(NodeVector nodeVector){
+        String start = nodeVector.getStartNode().toString();
+        String end = "";
+
+        if(nodeVector.getEndNode() != null){
+            end = nodeVector.getEndNode().toString();
+        } else {
+            /* A ":" is added so that we can tell it is a user variable, rather than an attribute. */
+            end = ":" + nodeVector.getNodeName();
+        }
+
+        String nodeString = start + "->" + end;
+        
+        if(this.nodeOrders.containsKey(nodeString)){
+            this.nodeOrders.put(nodeString, this.nodeOrders.get(nodeString).concat(", " + nodeVector.getOrder()));
+        } else {
+            this.nodeOrders.put(nodeString, Integer.toString(nodeVector.getOrder()));
+        }
+    }
+
+    /**
+     * Draws the order of vectors where they need to be.
+     * Not used, as it would clutter everything up too much.
+     * @param g
+     */
+    public void drawOrders(Graphics g){
+        /* Use a lambda expression to iterate over the hash map. */
+        this.nodeOrders.forEach((key, value) -> {
+            Point startPoint = new Point();
+            Point endPoint = new Point();
+
+            try {
+                NodeAttribute startNode = NodeAttribute.getNodeAttribute(Character.toString(key.charAt(0)));
+                startPoint = getNodePoint(startNode);
+                /* Is this a user variable? */
+                if(Compiler.inputValidation(Pattern.compile("[A-Z]->:[A-Za-z0-9]+"), key)){
+                    String end = key.substring(4);
+                    endPoint = this.userVariables.get(end);
+                } else {
+                    NodeAttribute endNode = NodeAttribute.getNodeAttribute(Character.toString(key.charAt(3)));
+                    endPoint = getNodePoint(endNode);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            /* applying the midpoint formula to find the center */
+            @SuppressWarnings("unused")
+            int midX = (startPoint.x + endPoint.x)/2 - value.length();
+            @SuppressWarnings("unused")
+            int midY = (startPoint.y + endPoint.y)/2;
+
+            /* Draw the orders at the center of the line. */
+            // g.drawString(value, midX, midY);     // commented because it clutters everything up
+        });
     }
     
     /**
@@ -336,6 +398,8 @@ public class CodePanel extends JPanel{
                 drawLink(g, startPoint, this.userVariables.get(nodeVector.getNodeName()));
             }
 
+            addOrders(nodeVector);
+
             nodesToDraw.add(nodeVector.getStartNode());
         }
 
@@ -344,5 +408,7 @@ public class CodePanel extends JPanel{
                 drawPoint(g, getNodePoint(nodeAttribute), nodeAttribute.toString());
             }
         }
+
+        drawOrders(g);
     }    
 }

@@ -24,10 +24,10 @@ if [logic [node1 < 2]] {
 logic [node1 = 4 < node1]
 
 //assembly style loop
-new [iterator = 0]
+new [i = 0]
 label:
-math [iterator = iterator + 1]
-if[logic [iterator < 10]] {
+math [i = i + 1]
+if[logic [i < 10]] {
     branch [label]  //branch test
 }
 

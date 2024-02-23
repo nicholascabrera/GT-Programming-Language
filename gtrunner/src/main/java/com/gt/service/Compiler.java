@@ -33,7 +33,7 @@ public class Compiler {
             new RegexPair(" {0,}in {0,}\\[ {0,}[A-Na-n] {0,}, {0,}[0-9]+ {0,}\\] {0,}", RegexType.WEIGHTED_IN),
             new RegexPair(" {0,}out {0,}\\[ {0,}[A-Na-n] {0,}\\] {0,}", RegexType.OUT),
             new RegexPair(" {0,}out {0,}\\[ {0,}[A-Na-n] {0,}, {0,}[0-9]+ {0,}\\] {0,}", RegexType.WEIGHTED_OUT),
-            new RegexPair(" {0,}new {0,}\\[[A-Z a-z0-9]+ ?= ?[A-Z a-z0-9]+\\] {0,}", RegexType.NEW),
+            new RegexPair(" {0,}new {0,}\\[[A-Za-z0-9]+ ?= ?[A-Z a-z0-9]+\\] {0,}", RegexType.NEW),
             new RegexPair(" {0,}new {0,}\\[[A-Z a-z0-9]+ {0,}= {0,}\\{[A-Z a-z0-9]+( {0,}, {0,}[A-Z a-z0-9]+){0,}\\} {0,}\\] {0,}", RegexType.NEW_ARRAY),
             new RegexPair(" {0,}math {0,}\\[ {0,}[A-Z a-z0-9]+ {0,}= {0,}[0-9 A-Za-z()+\\-*\\/^]+\\] {0,}", RegexType.MATH),
             new RegexPair(" {0,}logic {0,}\\[ {0,}[A-Z a-z0-9]+ {0,}= {0,}[A-Z a-z0-9<>=&|!()]+ {0,}\\] {0,}", RegexType.LOGIC_STOW),
