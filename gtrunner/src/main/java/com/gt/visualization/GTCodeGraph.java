@@ -9,10 +9,10 @@ import com.gt.adjacencies.AdjacencyList;
 
 public class GTCodeGraph extends JFrame{
     private AdjacencyList adjacencyList;
-    final private int frame_width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth()/3;
-    final private int frame_height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight()/2;
-    final private int x_location = 15;
-    final private int y_location = 15;
+    final private int frame_width = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+    final private int frame_height = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+    final private int x_location = 0;
+    final private int y_location = 0;
 
     public GTCodeGraph(AdjacencyList adjacencyList){
         this.adjacencyList = adjacencyList;
