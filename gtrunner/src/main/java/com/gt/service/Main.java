@@ -4,11 +4,11 @@ import com.gt.visualization.Grapher;
 
 public class Main {
     public static void main(String[] args) {
-        new Main().run();
+        new Main().timedRun();
     }
 
     public void run(){
-        Compiler compiler = new Compiler("code");
+        Compiler compiler = new Compiler("factorial");
         compiler.compile();
 
         Grapher grapher = new Grapher(compiler.getAdjacencyList()); // this is occuring in a different thread.
@@ -25,19 +25,19 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
         // compile the program
-        Compiler compiler = new Compiler("code");
-        compiler.compile();
-        long endTime = System.currentTimeMillis();
+        Compiler compiler = new Compiler("factorial");
+            compiler.compile();
+            long endTime = System.currentTimeMillis();
 
-        System.out.println("Compile Time: " + (endTime-startTime) + "ms");
+            System.out.println("Compile Time: " + (endTime-startTime) + "ms");
 
 
-        startTime = System.currentTimeMillis();
-        //actually run the program
-        new Interpreter().run(compiler.getAdjacencyList().getFilename());
-        endTime = System.currentTimeMillis();
+        // startTime = System.currentTimeMillis();
+        // //actually run the program
+        // new Interpreter().run(compiler.getAdjacencyList().getFilename());
+        // endTime = System.currentTimeMillis();
 
-        System.out.println("Text File Interpreter Time: " + (endTime-startTime) + "ms");
+        // System.out.println("Text File Interpreter Time: " + (endTime-startTime) + "ms");
 
         startTime = System.currentTimeMillis();
         //actually run the program

@@ -1,6 +1,6 @@
 new [i = 1]
 new [factorial = 1]
-new [n = 5]     //i want 5!
+new [n = 100]     //i want 100!
 
 loopStart:
     math [factorial = factorial * i]
