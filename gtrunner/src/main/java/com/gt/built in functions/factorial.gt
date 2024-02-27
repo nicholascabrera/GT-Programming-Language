@@ -1,0 +1,12 @@
+new [i = 1]
+new [factorial = 1]
+new [n = 5]     //i want 5!
+
+loopStart:
+    math [factorial = factorial * i]
+    math [i = i + 1]
+    if [logic [i <= n]]{
+        branch [loopStart]
+    }
+
+print [factorial]

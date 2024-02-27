@@ -21,6 +21,7 @@ import com.gt.adjacencies.Math;
 import com.gt.adjacencies.New;
 import com.gt.adjacencies.OpenBracket;
 import com.gt.adjacencies.Output;
+import com.gt.adjacencies.Print;
 import com.gt.node.NodeAttribute;
 import com.gt.node.NodeVector;
 import com.gt.regex.RegexPair;
@@ -44,7 +45,8 @@ public class Compiler {
             new RegexPair(" {0,}[}] {0,}", RegexType.CLOSED_BRACKET),
             new RegexPair(" {0,}branch {0,}\\[ {0,}[A-Za-z]+ {0,}\\] {0,}", RegexType.BRANCH),
             new RegexPair(" {0,}for {0,}\\[ {0,}[A-Za-z0-9]+ {0,}in {0,}-?[A-Za-z0-9]+ {0,}\\] {0,}", RegexType.FOR),
-            new RegexPair(" {0,}for {0,}\\[ {0,}[A-Za-z0-9]+ {0,}in {0,}-?[A-Za-z0-9]+ {0,}-> {0,}-?[A-Za-z0-9]+ {0,}\\] {0,}", RegexType.FOR_ARROW)
+            new RegexPair(" {0,}for {0,}\\[ {0,}[A-Za-z0-9]+ {0,}in {0,}-?[A-Za-z0-9]+ {0,}-> {0,}-?[A-Za-z0-9]+ {0,}\\] {0,}", RegexType.FOR_ARROW),
+            new RegexPair(" {0,}print {0,}\\[ {0,}[0-9 A-Za-z]+ {0,}\\] {0,}", RegexType.PRINT)
         };
     
     private Stack<String> read;
@@ -206,6 +208,11 @@ public class Compiler {
                                         continue outerloop;
                                     case BRANCH:
                                         this.adjacencyList.addNodeVector(new Branch(line.substring(start, i), keywordNum).getVector());
+                                        start = i+1;
+                                        keywordNum+=1;
+                                        continue outerloop;
+                                    case PRINT:
+                                        this.adjacencyList.addNodeVector(new Print(line.substring(start, i), keywordNum).getVector());
                                         start = i+1;
                                         keywordNum+=1;
                                         continue outerloop;

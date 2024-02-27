@@ -33,6 +33,8 @@ if[logic [i < 10]] {
 
 new [array1 = {0,1,2}]
 
+print [this is my message]
+
 //funct [multiplyByTwo(someNode or someValue)]    //every function must have a return statement at the end, even if nothing is returned
     //something happens here...
 //    return someValue or someNode    //this is how the compiler knows a function has ended

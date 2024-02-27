@@ -305,6 +305,13 @@ public class Interpreter {
                         // System.out.println(newExpression[1] + ": " + userVariables.get(newExpression[0])); //helps with seeing if everything is
                         // correct if i print
                     }
+                } else if (startNode == NodeAttribute.D){
+                    if(this.isEndNode(keyword.toString())){
+                        /* Print statement! */
+                        if(keyword.getEndNode() == NodeAttribute.G){
+                            System.out.println(keyword.getWeight());
+                        }
+                    }
                 } else {
 
                 }
