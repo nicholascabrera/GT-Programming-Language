@@ -309,7 +309,12 @@ public class Interpreter {
                     if(this.isEndNode(keyword.toString())){
                         /* Print statement! */
                         if(keyword.getEndNode() == NodeAttribute.G){
-                            System.out.println(keyword.getWeight());
+                            if(userVariables.get(keyword.getWeight()) == null && userArrays.get(keyword.getWeight()) == null){
+                                System.out.println(keyword.getWeight());
+                            } else {
+                                String result = (userVariables.get(keyword.getWeight()) == null) ? userArrays.get(keyword.getWeight()).toString() : userVariables.get(keyword.getWeight()).toString();
+                                System.out.println(result);
+                            }
                         }
                     }
                 } else {
