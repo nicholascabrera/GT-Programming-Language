@@ -1,0 +1,13 @@
+<mxfile host="65bd71144e">
+    <diagram id="kG0jMBOGouJ9ZGPbAzZc" name="Page-1">
+        <mxGraphModel dx="1106" dy="701" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="&lt;table border=&quot;1&quot; width=&quot;100%&quot; height=&quot;100%&quot; cellpadding=&quot;4&quot; style=&quot;width: 100%; height: 100%; border-collapse: collapse; font-size: 16px;&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;th align=&quot;center&quot;&gt;&lt;font style=&quot;font-size: 16px;&quot;&gt;factorial.gt&lt;/font&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;+i: int&lt;br&gt;+factorial: int&lt;br&gt;+n: int&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td align=&quot;center&quot;&gt;+factorialLoop()&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;" style="text;html=1;whiteSpace=wrap;strokeColor=default;fillColor=default;overflow=fill;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="160" width="280" height="230" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
