@@ -7,7 +7,7 @@ public class Branch {
     private NodeVector vector;
 
     public Branch(String label, int order){
-        this.vector = new NodeVector(NodeAttribute.N, NodeAttribute.B, order, label);
+        this.vector = new NodeVector(NodeAttribute.J, NodeAttribute.B, order, label);
     }
 
     public NodeVector getVector() {

@@ -289,14 +289,6 @@ public class Interpreter {
                         } else if (keyword.getEndNode() == NodeAttribute.I) {
                             /** Open bracket, we must record the truth value for later. */
                             this.concatTruthNode(adjacencies, i, temp);
-                        } else if (keyword.getEndNode() == NodeAttribute.B){
-                            /** This is a branch statement. We need to find the corresponding label. */
-                            String correspondingLabel = keyword.getWeight();
-                            /** Look at the label map. We need to find the location of the label in the adjacency list. */
-                            NodeVector labelVector = Compiler.getLabelMap().get(correspondingLabel);
-                            /** We have the label vector. We need to travel to its index in the adjacency list. */
-                            i = labelVector.getOrder()-1;
-                            continue;
                         }
                     } else {
                         String[] newExpression = {keyword.getNodeName(), keyword.getWeight()}; // node name is where the result is stored, the weight is the expression itself.
@@ -317,8 +309,18 @@ public class Interpreter {
                             }
                         }
                     }
-                } else {
-
+                } else if (startNode == NodeAttribute.J){
+                    if(this.isEndNode(keyword.toString())){
+                        if (keyword.getEndNode() == NodeAttribute.B){
+                            /** This is a branch statement. We need to find the corresponding label. */
+                            String correspondingLabel = keyword.getWeight();
+                            /** Look at the label map. We need to find the location of the label in the adjacency list. */
+                            NodeVector labelVector = Compiler.getLabelMap().get(correspondingLabel);
+                            /** We have the label vector. We need to travel to its index in the adjacency list. */
+                            i = labelVector.getOrder()-1;
+                            continue;
+                        }
+                    }
                 }
             }
         } catch (Exception e) {
