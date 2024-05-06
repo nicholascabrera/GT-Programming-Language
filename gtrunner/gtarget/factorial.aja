@@ -1,1 +1,1 @@
-[I1i:1, I2factorial:1, I3n:10, J4F:factorialLoop, M5factorial:factorial * i, M6i:i + 1, N7D:i <= n, N8K, N9I, J10B:factorialLoop, N11E:9, D12G:factorial]
+[I1i:1, I2factorial:1, I3n:1, J4F:factorialLoop, M5factorial:factorial * i, M6i:i + 1, N7D:i <= n, N8K, N9I, J10B:factorialLoop, N11E:9, D12G:factorial]

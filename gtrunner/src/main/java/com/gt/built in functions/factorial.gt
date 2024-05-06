@@ -1,6 +1,6 @@
 new [i = 1]
 new [factorial = 1]
-new [n = 10]     //i want 10!
+new [n = 1]     //i want 10!
 
 factorialLoop:
     math [factorial = factorial * i]
